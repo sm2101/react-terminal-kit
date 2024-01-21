@@ -1,0 +1,33 @@
+{
+  "name": "@webxsid/react-terminal",
+  "version": "0.0.1",
+  "description": "A terminal utility for react",
+  "main": "dist/index.jsx",
+  "author": "Siddharth Mittal <siddharthmittal2101@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build:script": "node ./scripts/build.js",
+    "build": "tsc",
+    "prepublishOnly": "yarn build"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.jsx"
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.46",
+    "ora": "5.4.1",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0"
+  }
+}

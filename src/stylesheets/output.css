@@ -1,0 +1,118 @@
+.react-terminal__output-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1;
+}
+.react-terminal__output {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0.5ch;
+  position: relative;
+}
+.react-terminal__output-prefix {
+  color: var(--terminal-disabled-color);
+}
+.react-terminal__output-prompt {
+  color: var(--terminal-disabled-color);
+}
+.react-terminal__output-prefix.output-text {
+  color: var(--terminal-output-color);
+}
+.react-terminal__output-prompt.output-text {
+  color: var(--terminal-output-color);
+}
+
+/* Text Classes*/
+.react-terminal__output-body1 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.react-terminal__output-body2 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.react-terminal__output-caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.react-terminal__output-h1 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+.react-terminal__output-h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.react-terminal__output-h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.react-terminal__output-h4 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.react-terminal__output-h5 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.react-terminal__output-h6 {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* Colors */
+.react-terminal__output-primary {
+  color: var(--terminal-output-color);
+}
+.react-terminal__output-secondary {
+  color: var(--terminal-disabled-color);
+}
+.react-terminal__output-info {
+  color: var(--terminal-info-color);
+}
+.react-terminal__output-warning {
+  color: var(--terminal-warning-color);
+}
+.react-terminal__output-success {
+  color: var(--terminal-success-color);
+}
+.react-terminal__output-error {
+  color: var(--terminal-error-color);
+}
+
+/* Margins */
+.react-terminal__output-margin {
+  height: var(--terminal-line-height);
+  width: 2ch;
+  border-left: 1px solid var(--terminal-border-color);
+}
+.react-terminal__output-margin .hidden {
+  border-left: unset;
+}
+
+/* Full Screen */
+.react-terminal__output-fullscreen {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transition: all 0.5s ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--terminal-background-color);
+  z-index: 9999;
+}
+.react-terminal__output-fullscreen .output__fullscreen-exit {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0.2rem;
+  background-color: var(--terminal-text-color);
+  color: var(--terminal-background-color);
+  border-top-right-radius: var(--terminal-border-radius);
+}
+.react-terminal__output-fullscreen .output__fullscreen-exit p {
+  margin: 0;
+}

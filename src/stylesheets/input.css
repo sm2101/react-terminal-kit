@@ -1,0 +1,137 @@
+.react-terminal__input-wrapper {
+  position: absolute;
+  z-index: -1;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.react-terminal__input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0.5ch;
+  position: relative;
+}
+.react-terminal__input.input__consent,
+.react-terminal__input.input__select {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.react-terminal__input-prefix {
+  color: var(--terminal-prompt-color);
+}
+.react-terminal__input-prompt {
+  color: var(--terminal-prompt-color);
+}
+.react-terminal__input-content {
+  flex-grow: 1;
+  position: relative;
+  min-height: var(--terminal-line-height);
+  text-align: left;
+}
+.react-terminal__input.input__consent .react-terminal__input-content {
+  display: flex;
+  gap: 2ch;
+  padding-left: 3ch;
+  --consent-indicator-size: 0.5ch;
+  --consent-indicator-color: var(--terminal-disabled-color);
+  /* make circle */
+  --consent-indicator-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  --consent-choice-color: var(--terminal-disabled-color);
+  --consent-choice-selected-color: var(--terminal-active-color);
+}
+.react-terminal__input.input__consent
+  .react-terminal__input-content.input__consent-focused {
+  --consent-indicator-size: 0.8ch;
+  --consent-indicator-clip-path: polygon(0 0, 100% 50%, 0 100%);
+  --consent-indicator-color: var(--terminal-info-color);
+  --consent-choice-color: var(--terminal-active-color);
+  --consent-choice-selected-color: var(--terminal-info-color);
+}
+
+.react-terminal__input.input__consent
+  .react-terminal__input-content
+  .input__consent-choices {
+  color: var(--consent-choice-color);
+  position: relative;
+}
+
+.react-terminal__input.input__consent
+  .react-terminal__input-content
+  .input__consent-choices.input__consent-choices-chosen {
+  color: var(--consent-choice-selected-color);
+}
+.react-terminal__input.input__consent
+  .react-terminal__input-content
+  .input__consent-choices.input__consent-choices-chosen::before {
+  content: "";
+  color: var(--consent-choice-selected-color);
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  left: calc(-1 * var(--consent-indicator-size) - 0.5ch);
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--consent-indicator-size);
+  width: var(--consent-indicator-size);
+  /* make right facing triangle */
+  clip-path: var(--consent-indicator-clip-path);
+  background-color: var(--consent-choice-selected-color);
+}
+
+/**
+    * Select Input Styles
+*/
+.react-terminal__input.input__select .react-terminal__input-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1ch;
+  padding-left: 3ch;
+  --select-indicator-size: 0.5ch;
+  --select-indicator-color: var(--terminal-disabled-color);
+  /* make circle */
+  --select-indicator-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  --select-choice-color: var(--terminal-disabled-color);
+  --select-choice-selected-color: var(--terminal-active-color);
+}
+.react-terminal__input.input__select
+  .react-terminal__input-content.input__select-focused {
+  --select-indicator-size: 0.8ch;
+  --select-indicator-clip-path: polygon(0 0, 100% 50%, 0 100%);
+  --select-indicator-color: var(--terminal-info-color);
+  --select-choice-color: var(--terminal-active-color);
+  --select-choice-selected-color: var(--terminal-info-color);
+}
+.react-terminal__input.input__select
+  .react-terminal__input-content
+  .input__select-choices {
+  color: var(--select-choice-color);
+  position: relative;
+}
+.react-terminal__input.input__select
+  .react-terminal__input-content
+  .input__select-choices.input__select-choices-chosen {
+  color: var(--select-choice-selected-color);
+}
+.react-terminal__input.input__select
+  .react-terminal__input-content
+  .input__select-choices.input__select-choices-chosen::before {
+  content: "";
+  color: var(--select-choice-selected-color);
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  left: calc(-1 * var(--select-indicator-size) - 0.5ch);
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--select-indicator-size);
+  width: var(--select-indicator-size);
+  /* make right facing triangle */
+  clip-path: var(--select-indicator-clip-path);
+  background-color: var(--select-choice-selected-color);
+}
+
+.react-terminal__input-content p {
+  margin: 0;
+}

@@ -1,0 +1,39 @@
+.react-terminal__terminal-cursor {
+  position: absolute;
+  top: 0;
+  height: var(--terminal-line-height);
+}
+.react-terminal__terminal-cursor.cursor__box {
+  background-color: var(--terminal-cursor-color);
+  /* width should be equal to the width of a single char */
+  width: 1ch;
+  mix-blend-mode: difference;
+}
+.react-terminal__terminal-cursor.cursor__line {
+  background-color: var(--terminal-cursor-color);
+  width: 2px;
+}
+.react-terminal__terminal-cursor.cursor__underline {
+  width: 1ch;
+  border-bottom: 1px solid var(--terminal-cursor-color);
+  height: calc(var(--terminal-font-size) + 2px);
+}
+.react-terminal__terminal-cursor.blink {
+  animation: blink 1s infinite alternate-reverse;
+}
+.react-terminal__terminal-cursor.blink-fast {
+  animation: blink 0.5s infinite alternate-reverse;
+}
+.react-terminal__terminal-cursor.blink-slow {
+  animation: blink 1.5s infinite alternate-reverse;
+}
+
+/* Animations */
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
