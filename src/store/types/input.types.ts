@@ -12,7 +12,7 @@ enum InputActionTypes {
 
 interface InputAction {
   type: InputActionTypes;
-  payload: InputState | boolean;
+  payload?: InputState | boolean;
 }
 
 export { InputActionTypes, InputAction };

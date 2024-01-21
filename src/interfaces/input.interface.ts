@@ -6,47 +6,45 @@ interface ICommandInput {
   prompt: string;
   inputRef: React.RefObject<HTMLInputElement>;
   cursorClassName?: string;
-  setOutput: React.Dispatch<React.SetStateAction<Output[]>>;
-  isFocused: boolean;
-  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  isFocused: InputReducerState["isFocused"];
+  focusInput: () => void;
+  blurInput: () => void;
   handleCommand: (command: string) => void;
+  displayOutput: TerminalUtils["displayOutput"];
 }
 
 interface Input {
   prefix: string;
   prompt: string;
   inputRef: React.RefObject<HTMLInputElement>;
-  setOutput: React.Dispatch<React.SetStateAction<Output[]>>;
   cursorClassName?: string;
-  isFocused: boolean;
-  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
   displayOutput: TerminalUtils["displayOutput"];
+  isFocused: InputReducerState["isFocused"];
+  focusInput: () => void;
+  blurInput: () => void;
+  handleError: (error: string) => void;
 }
 
 interface ITextInput extends Input {
   handleEnter: (text: string) => void;
-  handleError: (error: string) => void;
-  options?: AwaitInputOptions;
+  options?: UserInputOptions;
 }
 interface IBooleanInput extends Input {
   handleEnter: (choice: boolean) => void;
-  handleError: (error: string) => void;
-  options?: AwaitBooleanInputOptions;
+  options?: UserBooleanInputOptions;
 }
 
 interface IPasswordInput extends Input {
   handleEnter: (password: string) => void;
-  handleError: (error: string) => void;
-  options?: AwaitPasswordInputOptions;
+  options?: UserPasswordInputOptions;
 }
 
 interface ISelectInput extends Input {
   handleEnter: (choice: number) => void;
-  handleError: (error: string) => void;
-  options: AwaitSelectInputOptions;
+  options: UserSelectInputOptions;
 }
 
-interface AwaitInputOptions {
+interface UserInputOptions {
   allowEmpty?: boolean;
   maxRetries?: number; // 0 = infinite & allowEmpty = false
   retryMessage?: string;
@@ -54,17 +52,17 @@ interface AwaitInputOptions {
   validator?: (input: string) => boolean;
 }
 
-interface AwaitPasswordInputOptions extends AwaitInputOptions {
+interface UserPasswordInputOptions extends UserInputOptions {
   mask?: boolean;
 }
 
-interface AwaitBooleanInputOptions {
+interface UserBooleanInputOptions {
   true: string;
   false: string;
   default?: boolean;
 }
 
-interface AwaitSelectInputOptions {
+interface UserSelectInputOptions {
   options: string[];
   default?: number;
 }
@@ -123,10 +121,10 @@ export {
   ITextInput,
   ISelectInput,
   IPasswordInput,
-  AwaitInputOptions,
-  AwaitPasswordInputOptions,
-  AwaitBooleanInputOptions,
-  AwaitSelectInputOptions,
+  UserInputOptions,
+  UserPasswordInputOptions,
+  UserBooleanInputOptions,
+  UserSelectInputOptions,
   TextInputState,
   PasswordInputState,
   BooleanInputState,

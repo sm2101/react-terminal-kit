@@ -1,5 +1,6 @@
+import { DisplayTextOutputArgs } from "../../interfaces/output.interface";
 import { TerminalCommand } from "../../interfaces/terminal.interface";
-import { CommandAction } from "../types/command.types";
+import { CommandAction, CommandActionTypes } from "../types/command.types";
 
 const INIT_STATE: TerminalCommand = {
   help: {
@@ -15,23 +16,27 @@ const INIT_STATE: TerminalCommand = {
             content: `${key}: `,
             options: { variant: "body1" },
           },
-          ...(value.description && {
-            content: `${value.description}`,
-            options: { variant: "body2" },
-          }),
+          value.description &&
+            ({
+              content: `${value.description}`,
+              options: { variant: "body2" },
+            } as DisplayTextOutputArgs),
         ]);
       }
     },
   },
   clear: {
     description: "Clear the terminal",
-    callback: (utils) => () => {
+    callback: (utils) => {
       utils.clearScreen();
     },
   },
 };
 
-const commandReducer = (state: TerminalCommand, action: CommandAction) => {
+const commandReducer = (
+  state: TerminalCommand,
+  action: CommandAction
+): TerminalCommand => {
   switch (action.type) {
     case CommandActionTypes.ADD_COMMANDS:
       return {

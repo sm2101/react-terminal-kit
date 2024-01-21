@@ -1,5 +1,5 @@
 import { TerminalCommand } from "../../index";
-import { CommandAction } from "../types/command.types";
+import { CommandAction, CommandActionTypes } from "../types/command.types";
 
 const addCommands = (commands: TerminalCommand): CommandAction => {
   return {

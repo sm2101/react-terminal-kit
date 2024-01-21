@@ -1,29 +1,26 @@
-import { DisplayOutputArgs, OutputMarginLevel } from "./output.interface";
+import { DisplayOutputArgs } from "./output.interface";
 import {
-  AwaitBooleanInputOptions,
-  AwaitInputOptions,
-  AwaitPasswordInputOptions,
-  AwaitSelectInputOptions,
+  UserBooleanInputOptions,
+  UserInputOptions,
+  UserPasswordInputOptions,
+  UserSelectInputOptions,
 } from "./input.interface";
 
 interface TerminalRef {}
 
 interface TerminalUtils {
   displayOutput: (data: DisplayOutputArgs) => void;
-  awaitInput: (text: string, options: AwaitInputOptions) => Promise<string>;
-  awaitPassword: (
-    text: string,
-    options: AwaitPasswordInputOptions
-  ) => Promise<string>;
-  awaitConfirm: (
-    text: string,
-    options: AwaitBooleanInputOptions
-  ) => Promise<boolean>;
-  awaitSelect: (
-    text: string,
-    options: AwaitSelectInputOptions
-  ) => Promise<number>;
   clearScreen: () => void;
+  input: (prompt: string, options: UserInputOptions) => Promise<string>;
+  password: (
+    prompt: string,
+    options: UserPasswordInputOptions
+  ) => Promise<string>;
+  confirm: (
+    prompt: string,
+    options: UserBooleanInputOptions
+  ) => Promise<boolean>;
+  select: (prompt: string, options: UserSelectInputOptions) => Promise<number>;
 }
 
 interface ITerminal {
@@ -32,6 +29,7 @@ interface ITerminal {
   cursor: "block" | "underline" | "bar";
   theme: "light" | "dark";
   commands: TerminalCommand;
+  children?: React.ReactNode;
 }
 
 interface TerminalCommand {

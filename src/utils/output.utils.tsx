@@ -21,4 +21,22 @@ const generateOutput = (output: string, options: OutputOptions): string => {
   return `<span class="${outputClassName}" ${style}>${output}</span>`;
 };
 
-export { generateOutput };
+const generateOutputNode = ({
+  prefix,
+  prompt,
+  text,
+}: {
+  prefix: string;
+  prompt: string;
+  text: React.ReactNode;
+}): React.ReactNode => {
+  return (
+    <div className="react-terminal__output">
+      <div className="react-terminal__output-prefix">{prefix}</div>
+      <div className="react-terminal__output-prompt">{prompt}</div>
+      {text}
+    </div>
+  );
+};
+
+export { generateOutput, generateOutputNode };

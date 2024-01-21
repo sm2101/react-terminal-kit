@@ -1,10 +1,16 @@
-import { Output } from "../../interfaces/output.interface";
+import {
+  DisplayTextOutputArgs,
+  Output,
+} from "../../interfaces/output.interface";
 import { OutputActionTypes, IOutputAction } from "../types/output.types";
 import { generateOutput } from "../../utils/output.utils";
 
 const INIT_STATE: Array<Output> = [];
 
-const outputReducer = (state: Array<Output>, action: IOutputAction) => {
+const outputReducer = (
+  state: Array<Output>,
+  action: IOutputAction
+): Array<Output> => {
   switch (action.type) {
     case OutputActionTypes.ADD_OUTPUT:
       return [
@@ -17,7 +23,7 @@ const outputReducer = (state: Array<Output>, action: IOutputAction) => {
     case OutputActionTypes.ADD_OUTPUT_HTML:
       let out = action.payload;
       if (!Array.isArray(out)) out = [out];
-      const outputHtml = out.map((item) =>
+      const outputHtml = (out as DisplayTextOutputArgs[]).map((item) =>
         generateOutput(item.content, item.options)
       );
       return [

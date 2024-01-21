@@ -9,7 +9,7 @@ enum OutputActionTypes {
 
 interface IOutputAction {
   type: OutputActionTypes;
-  payload: DisplayOutputArgs | undefined | null;
+  payload?: DisplayOutputArgs | null;
 }
 
 export { OutputActionTypes, IOutputAction };

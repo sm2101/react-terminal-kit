@@ -1,6 +1,7 @@
 import React from "react";
-import { Output } from "../interfaces/output.interface";
-import { IBooleanInput } from "../interfaces/input.interface";
+import { Output } from "../../interfaces/output.interface";
+import { IBooleanInput } from "../../interfaces/input.interface";
+import { generateOutputNode } from "../../utils/output.utils";
 
 const BooleanInput: React.FC<IBooleanInput> = ({
   prefix,
@@ -8,24 +9,16 @@ const BooleanInput: React.FC<IBooleanInput> = ({
   inputRef,
   cursorClassName,
   isFocused,
-  setIsFocused,
+  focusInput,
+  blurInput,
   handleEnter,
   handleError,
   options,
   displayOutput,
-  setOutput,
 }) => {
   const [choice, setChoice] = React.useState<boolean>(
     options?.default || false
   );
-
-  const generateOutputHtml = (text: string) => {
-    return `<div class="react-terminal__output">
-    <div class="react-terminal__output-prefix output-text">${prefix}</div>
-    <div class="react-terminal__output-prompt output-text">${prompt}</div>
-    ${text}
-  </div>`;
-  };
 
   const handleInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChoice(event.target.checked);
@@ -33,15 +26,16 @@ const BooleanInput: React.FC<IBooleanInput> = ({
 
   const keyDownEvents = {
     Enter: (event: React.KeyboardEvent<HTMLInputElement>) => {
-      setOutput((prev) => [
-        ...prev,
-        {
-          type: "html",
-          content: generateOutputHtml(
-            choice ? options?.true || "Yes" : options?.false || "No"
-          ),
-        },
-      ]);
+      const choiceText = choice
+        ? options?.true || "Yes"
+        : options?.false || "No";
+      displayOutput(
+        generateOutputNode({
+          prefix,
+          prompt,
+          text: choiceText,
+        })
+      );
       handleEnter(choice);
     },
     ArrowLeft: (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -72,10 +66,10 @@ const BooleanInput: React.FC<IBooleanInput> = ({
   React.useEffect(() => {
     if (isFocused) {
       if (inputRef.current) {
-        inputRef.current.focus();
+        focusInput();
         setChoice(inputRef.current.checked);
       } else {
-        setIsFocused(false);
+        blurInput();
       }
     }
   }, [isFocused]);
@@ -115,12 +109,8 @@ const BooleanInput: React.FC<IBooleanInput> = ({
           checked={choice}
           onChange={handleInputChanged}
           onKeyDown={handleKeyDown}
-          onFocus={() => {
-            setIsFocused(true);
-          }}
-          onBlur={() => {
-            setIsFocused(false);
-          }}
+          onFocus={focusInput}
+          onBlur={blurInput}
         />
       </div>
     </>

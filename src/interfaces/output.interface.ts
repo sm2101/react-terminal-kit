@@ -23,7 +23,7 @@ enum OutputColorClass {
 }
 
 interface Output {
-  content: string | React.ReactNode;
+  content: React.ReactNode;
   type: "text" | "html" | "jsx";
 }
 

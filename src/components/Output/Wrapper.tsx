@@ -3,7 +3,9 @@ import { Output } from "../../interfaces/output.interface";
 
 const OutputWrapper: React.FC<{
   output: Output[];
-}> = ({ output }) => {
+  prefix: string;
+  prompt: string;
+}> = ({ output, prefix, prompt }) => {
   return (
     <div className="react-terminal__output-wrapper">
       {output.map((item, index) => {
@@ -21,7 +23,7 @@ const OutputWrapper: React.FC<{
           return (
             <div
               key={index}
-              dangerouslySetInnerHTML={{ __html: item.content }}
+              dangerouslySetInnerHTML={{ __html: item.content as string }}
             />
           );
         } else if (item.type === "jsx") {

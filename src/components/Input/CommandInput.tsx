@@ -1,31 +1,24 @@
 import React from "react";
-import { Output } from "../interfaces/output.interface";
-import { ITextInput } from "../interfaces/input.interface";
+import { Output } from "../../interfaces/output.interface";
+import { ICommandInput } from "../../interfaces/input.interface";
+import { storeHistory, getHistory } from "../../utils/history.util";
+import { generateOutputNode } from "../../utils/output.utils";
 
-const TextInput: React.FC<ITextInput> = ({
+const CommandInput: React.FC<ICommandInput> = ({
   prefix,
   prompt,
   inputRef,
   cursorClassName,
+  handleCommand,
   isFocused,
-  setIsFocused,
-  handleEnter,
-  handleError,
-  options,
+  focusInput,
+  blurInput,
   displayOutput,
-  setOutput,
 }) => {
   const [input, setInput] = React.useState<string>("");
+  const [history, setHistory] = React.useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = React.useState<number>(0);
   const [cursorPosition, setCursorPosition] = React.useState<number>(0);
-  const [numTries, setNumTries] = React.useState<number>(1);
-
-  const generateOutputHtml = (text: string) => {
-    return `<div class="react-terminal__output">
-    <div class="react-terminal__output-prefix output-text">${prefix}</div>
-    <div class="react-terminal__output-prompt output-text">${prompt}</div>
-    ${text}
-  </div>`;
-  };
 
   const handleInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => {
@@ -55,69 +48,33 @@ const TextInput: React.FC<ITextInput> = ({
     changeCursorPos(text.length);
   };
 
-  const validateInputAndEnter = (text: string) => {
-    if (options?.validator) {
-      if (options.validator(text)) {
-        handleEnter(text);
-      } else {
-        displayOutput([
-          {
-            text: options?.errorMessage || "[Invalid input]",
-            options: {
-              color: "error",
-              variant: "caption",
-            },
-          },
-        ]);
-        handleError("Invalid input");
-      }
-    } else {
-      handleEnter(text);
-    }
-  };
-
   const keyDownEvents = {
     Enter: (event: React.KeyboardEvent<HTMLInputElement>) => {
-      setOutput((prev) => [
-        ...prev,
-        {
-          type: "html",
-          content: generateOutputHtml(input),
-        },
-      ]);
-      if (options?.allowEmpty) {
-        validateInputAndEnter(input);
-      } else {
-        if (options?.maxRetries) {
-          if (numTries < options.maxRetries) {
-            if (input.length > 0) {
-              validateInputAndEnter(input);
-            } else {
-              displayOutput([
-                {
-                  text: options?.retryMessage || "[Please enter a value]",
-                  options: {
-                    color: "primary",
-                    variant: "caption",
-                  },
-                },
-              ]);
-              setNumTries(numTries + 1);
-            }
-          } else {
-            displayOutput([
-              {
-                text: options.errorMessage || "[Max retries exceeded]",
-                options: { color: "error", variant: "caption" },
-              },
-              {
-                text: `Please try again`,
-                options: { color: "primary", variant: "caption" },
-              },
-            ]);
-            handleError("Max retries exceeded");
-          }
-        }
+      if (input.length > 0) {
+        setHistory([...history, input]);
+        storeHistory([...history, input]);
+        setHistoryIndex(history.length + 1);
+        displayOutput(
+          generateOutputNode({
+            prefix,
+            prompt,
+            text: `${input}`,
+          })
+        );
+        changeInput("");
+        handleCommand(input);
+      }
+    },
+    ArrowUp: (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (historyIndex > 0) {
+        setHistoryIndex(historyIndex - 1);
+        changeInput(history[historyIndex - 1]);
+      }
+    },
+    ArrowDown: (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (historyIndex < history.length) {
+        setHistoryIndex(historyIndex + 1);
+        changeInput(history[historyIndex + 1] || "");
       }
     },
     ArrowLeft: (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -150,13 +107,20 @@ const TextInput: React.FC<ITextInput> = ({
   React.useEffect(() => {
     if (isFocused) {
       if (inputRef.current) {
-        inputRef.current.focus();
-        changeInput(inputRef.current.value);
+        focusInput();
       } else {
-        setIsFocused(false);
+        blurInput();
       }
     }
   }, [isFocused]);
+
+  React.useEffect(() => {
+    const existingHistory = getHistory();
+    if (existingHistory) {
+      setHistory(existingHistory);
+      setHistoryIndex(existingHistory.length);
+    }
+  }, []);
 
   return (
     <>
@@ -167,7 +131,7 @@ const TextInput: React.FC<ITextInput> = ({
           <p>{input}</p>
           {isFocused && (
             <span
-              className={`react-terminal__terminal-cursor blink ${
+              className={`react-terminal__terminal-cursor blink-fast ${
                 cursorClassName || "cursor__box"
               }`}
               style={{
@@ -184,16 +148,12 @@ const TextInput: React.FC<ITextInput> = ({
           value={input}
           onChange={handleInputChanged}
           onKeyDown={handleKeyDown}
-          onFocus={() => {
-            setIsFocused(true);
-          }}
-          onBlur={() => {
-            setIsFocused(false);
-          }}
+          onFocus={focusInput}
+          onBlur={blurInput}
         />
       </div>
     </>
   );
 };
 
-export default TextInput;
+export default CommandInput;

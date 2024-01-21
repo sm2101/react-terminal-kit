@@ -13,12 +13,15 @@ const INIT_STATE: InputReducerState = {
   isFocused: false,
 };
 
-const inputReducer = (state: InputReducerState, action: InputAction) => {
+const inputReducer = (
+  state: InputReducerState,
+  action: InputAction
+): InputReducerState => {
   switch (action.type) {
     case InputActionTypes.SET_IS_FOCUSED:
       return {
         ...state,
-        type: action.payload as boolean,
+        isFocused: action.payload as boolean,
       };
     case InputActionTypes.SET_TEXT_INPUT:
       return {

@@ -1,6 +1,7 @@
 import React from "react";
-import { Output } from "../interfaces/output.interface";
-import { IPasswordInput } from "../interfaces/input.interface";
+import { Output } from "../../interfaces/output.interface";
+import { IPasswordInput } from "../../interfaces/input.interface";
+import { generateOutputNode } from "../../utils/output.utils";
 
 const PasswordInput: React.FC<IPasswordInput> = ({
   prefix,
@@ -8,27 +9,17 @@ const PasswordInput: React.FC<IPasswordInput> = ({
   inputRef,
   cursorClassName,
   isFocused,
-  setIsFocused,
+  focusInput,
+  blurInput,
   handleEnter,
   handleError,
   options,
   displayOutput,
-  setOutput,
 }) => {
   const [input, setInput] = React.useState<string>("");
   const [cursorPosition, setCursorPosition] = React.useState<number>(0);
   const [numTries, setNumTries] = React.useState<number>(1);
   const [hideCursor, setHideCursor] = React.useState<boolean>(false);
-
-  const generateOutputHtml = (text: string) => {
-    return `<div class="react-terminal__output">
-    <div class="react-terminal__output-prefix output-text">${prefix}${
-      options?.mask ? " (hidden)" : ""
-    }</div>
-    <div class="react-terminal__output-prompt output-text">${prompt}</div>
-    ${options?.mask ? "" : text}
-  </div>`;
-  };
 
   const handleInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => {
@@ -65,7 +56,7 @@ const PasswordInput: React.FC<IPasswordInput> = ({
       } else {
         displayOutput([
           {
-            text: options?.errorMessage || "[Invalid input]",
+            content: options?.errorMessage || "[Invalid input]",
             options: {
               color: "error",
               variant: "caption",
@@ -81,13 +72,13 @@ const PasswordInput: React.FC<IPasswordInput> = ({
 
   const keyDownEvents = {
     Enter: (event: React.KeyboardEvent<HTMLInputElement>) => {
-      setOutput((prev) => [
-        ...prev,
-        {
-          type: "html",
-          content: generateOutputHtml(input),
-        },
-      ]);
+      displayOutput(
+        generateOutputNode({
+          prefix,
+          prompt,
+          text: options?.mask ? "[hidden]" : input,
+        })
+      );
       if (options?.allowEmpty) {
         validateInputAndEnter(input);
       } else {
@@ -96,28 +87,20 @@ const PasswordInput: React.FC<IPasswordInput> = ({
             if (input.length > 0) {
               validateInputAndEnter(input);
             } else {
-              displayOutput([
-                {
-                  text: options?.retryMessage || "[Please enter a value]",
-                  options: {
-                    color: "primary",
-                    variant: "caption",
-                  },
+              displayOutput({
+                content: options?.retryMessage || "[Please enter a value]",
+                options: {
+                  color: "primary",
+                  variant: "caption",
                 },
-              ]);
+              });
               setNumTries(numTries + 1);
             }
           } else {
-            displayOutput([
-              {
-                text: options.errorMessage || "[Max retries exceeded]",
-                options: { color: "error", variant: "caption" },
-              },
-              {
-                text: `Please try again`,
-                options: { color: "primary", variant: "caption" },
-              },
-            ]);
+            displayOutput({
+              content: options.errorMessage || "[Max retries exceeded]",
+              options: { color: "error", variant: "caption" },
+            });
             handleError("Max retries exceeded");
           }
         }
@@ -153,10 +136,10 @@ const PasswordInput: React.FC<IPasswordInput> = ({
   React.useEffect(() => {
     if (isFocused) {
       if (inputRef.current) {
-        inputRef.current.focus();
+        focusInput();
         changeInput(inputRef.current.value);
       } else {
-        setIsFocused(false);
+        blurInput();
       }
     }
   }, [isFocused]);
@@ -194,12 +177,8 @@ const PasswordInput: React.FC<IPasswordInput> = ({
           value={input}
           onChange={handleInputChanged}
           onKeyDown={handleKeyDown}
-          onFocus={() => {
-            setIsFocused(true);
-          }}
-          onBlur={() => {
-            setIsFocused(false);
-          }}
+          onFocus={focusInput}
+          onBlur={blurInput}
         />
       </div>
     </>
