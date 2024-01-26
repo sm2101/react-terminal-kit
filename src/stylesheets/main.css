@@ -20,6 +20,14 @@
   box-sizing: border-box;
   position: relative;
 }
+.react-terminal::-webkit-scrollbar {
+  width: 0.5ch;
+  background-color: var(--terminal-scrollbar-color);
+}
+.react-terminal::-webkit-scrollbar-thumb {
+  width: 0.5ch;
+  background-color: var(--terminal-scrollbar-thumb-color);
+}
 
 .react-terminal.react-terminal__dark-mode {
   --terminal-background-color: #1e1e1e;

@@ -4,16 +4,18 @@ import {
   OutputVariantClass,
 } from "../interfaces/output.interface";
 
-const generateOutput = (output: string, options: OutputOptions): string => {
+const generateOutput = (output: string, options?: OutputOptions): string => {
+  if (!options) {
+    return `<span class="react-terminal__output">${output}</span>`;
+  }
   const { variant, color, url } = options;
   const variantClass =
-    OutputVariantClass[(variant || "body1") as keyof typeof OutputVariantClass];
-  const colorClass =
-    OutputColorClass[(color || "primary") as keyof typeof OutputColorClass];
+    OutputVariantClass[variant as keyof typeof OutputVariantClass];
+  const colorClass = OutputColorClass[color as keyof typeof OutputColorClass];
   const outputUrl = url ? url : "";
   const outputVariant = variantClass ? variantClass : "";
   const outputColor = colorClass ? colorClass : "";
-  const outputClassName = `${outputVariant} ${outputColor}`;
+  const outputClassName = `react-terminal__output ${outputVariant} ${outputColor}`;
   const style = !outputColor && color ? `style="color: ${color}"` : "";
   if (url) {
     return `<a href="${outputUrl}" class="${outputClassName} react-terminal__output-link" ${style} target="_blank" rel="noopener noreferrer">${output}</a>`;

@@ -1,5 +1,6 @@
 {
-  "name": "@webxsid/react-terminal",
+  "name": "react-terminal-kit",
+  "displayName": "React Terminal Kit",
   "version": "0.0.1",
   "description": "A terminal utility for react",
   "main": "dist/index.jsx",
@@ -10,6 +11,16 @@
     "build": "tsc",
     "prepublishOnly": "yarn build:script"
   },
+  "keywords": [
+    "react",
+    "terminal",
+    "terminal-kit",
+    "react-terminal",
+    "ui-kit",
+    "react-component",
+    "ui-library",
+    "typescript"
+  ],
   "files": [
     "dist"
   ],

@@ -111,6 +111,16 @@
   overflow: auto;
   box-sizing: border-box;
 }
+.react-terminal__output-fullscreen
+  .react-terminal__output-wrapper::-webkit-scrollbar {
+  width: 0.5ch;
+  background-color: var(--terminal-scrollbar-color);
+}
+.react-terminal__output-fullscreen
+  .react-terminal__output-wrapper::-webkit-scrollbar-thumb {
+  width: 0.5ch;
+  background-color: var(--terminal-scrollbar-thumb-color);
+}
 .react-terminal__output-fullscreen .output__fullscreen-footer {
   position: absolute;
   bottom: 0;
