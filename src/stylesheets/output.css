@@ -3,6 +3,10 @@
   flex-direction: column;
   gap: 1px;
 }
+
+.react-terminal__output-wrapper p {
+  margin: 0;
+}
 .react-terminal__output {
   display: flex;
   align-items: center;
