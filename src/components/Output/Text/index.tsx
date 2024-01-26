@@ -18,7 +18,6 @@ const Text: React.FC<TextProps> = ({
     [OutputVariantClass[variant as keyof typeof OutputVariantClass]]:
       variant || false,
     [OutputColorClass[color as keyof typeof OutputColorClass]]: color || false,
-    "react-terminal__output": true,
     [className as string]: className || false,
   });
   if (href)
