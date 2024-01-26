@@ -1,8 +1,7 @@
 # ReactTerminalKit
 
 [![npm version](https://badge.fury.io/js/react-terminal-kit.svg)](https://badge.fury.io/js/react-terminal-kit)
-[![Build Status](https://travis-ci.com/ReactTerminalKit/react-terminal-ui.svg?branch=main)](https://travis-ci.com/ReactTerminalKit/react-terminal-ui)
-[![Coverage Status](https://coveralls.io/repos/github/ReactTerminalKit/react-terminal-ui/badge.svg?branch=main)](https://coveralls.io/github/ReactTerminalKit/react-terminal-ui?branch=main)
+[![Build Status](https://travis-ci.com/ReactTerminalKit/react-terminal-kit.svg?branch=main)](https://travis-ci.com/ReactTerminalKit/react-terminal-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
