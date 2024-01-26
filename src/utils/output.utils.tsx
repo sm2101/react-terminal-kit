@@ -6,7 +6,7 @@ import {
 
 const generateOutput = (output: string, options?: OutputOptions): string => {
   if (!options) {
-    return `<span class="react-terminal__output">${output}</span>`;
+    return `<span>${output}</span>`;
   }
   const { variant, color, url } = options;
   const variantClass =
@@ -15,7 +15,7 @@ const generateOutput = (output: string, options?: OutputOptions): string => {
   const outputUrl = url ? url : "";
   const outputVariant = variantClass ? variantClass : "";
   const outputColor = colorClass ? colorClass : "";
-  const outputClassName = `react-terminal__output ${outputVariant} ${outputColor}`;
+  const outputClassName = `${outputVariant} ${outputColor}`;
   const style = !outputColor && color ? `style="color: ${color}"` : "";
   if (url) {
     return `<a href="${outputUrl}" class="${outputClassName} react-terminal__output-link" ${style} target="_blank" rel="noopener noreferrer">${output}</a>`;

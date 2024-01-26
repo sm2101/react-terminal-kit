@@ -188,6 +188,8 @@ The `FullScreenOutput` component is designed to display full-screen content with
 | `path`(required) | `string`          | Not specified | A string representing the path or identifier for the full-screen content. |
 | `children`       | `React.ReactNode` | Not specified | The content to be displayed within the full-screen output.                |
 
+**Note:** Ensure that you use the `FullScreenOutput` component directly inside the `Terminal` component and pass any custom components as children to it. The `Terminal` component will only render the `FullScreenOutput` component if it is a direct child.
+
 Example:
 
 ```jsx
@@ -195,7 +197,7 @@ import Terminal, { FullScreenOutput } from "react-terminal-kit";
 
 <Terminal prefix="root" prompt="$" cursor="block" theme="dark">
   <FullScreenOutput path="example-path" unmountOnExit>
-    {/* Your full-screen content goes here */}
+    {/* Your custom content here */}
   </FullScreenOutput>
 </Terminal>;
 ```
@@ -260,7 +262,7 @@ If you encounter any issues or have feature requests, please open an issue on th
 
 The React Terminal Kit package is released under the MIT License. See the full license text here:
 
-- [MIT License](https://github.com/sm2101/react-terminal-kit/blob/main/LICENSE)
+- [MIT License](https://github.com/sm2101/react-terminal-kit/blob/main/LICENSE.md)
 
 ### Author
 

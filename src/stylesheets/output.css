@@ -12,6 +12,11 @@
   position: relative;
   margin: 0;
 }
+.react-terminal__output-link {
+  color: var(--terminal-link-color);
+  text-decoration: underline;
+}
+
 .react-terminal__output-prefix {
   color: var(--terminal-disabled-color);
 }
