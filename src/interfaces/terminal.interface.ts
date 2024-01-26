@@ -21,6 +21,8 @@ interface TerminalUtils {
     options: UserBooleanInputOptions
   ) => Promise<boolean>;
   select: (prompt: string, options: UserSelectInputOptions) => Promise<number>;
+  openFullscreen: (path: string) => void;
+  closeFullscreen: () => void;
 }
 
 interface ITerminal {
@@ -48,4 +50,23 @@ interface TerminalCommand {
   };
 }
 
-export { TerminalRef, ITerminal, TerminalCommand, TerminalUtils };
+interface FullscreenChildren {
+  [path: string]: {
+    component: React.ReactNode;
+    unmountOnExit: boolean;
+    open: boolean;
+  };
+}
+
+interface ChildrenReducerState {
+  fullscreen: FullscreenChildren;
+}
+
+export {
+  TerminalRef,
+  ITerminal,
+  TerminalCommand,
+  TerminalUtils,
+  ChildrenReducerState,
+  FullscreenChildren,
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSXElementConstructor } from "react";
 import { Output, DisplayOutputArgs } from "../interfaces/output.interface";
 import {
   InputType,
@@ -10,6 +10,7 @@ import {
   UserSelectInputOptions,
 } from "../interfaces/input.interface";
 import {
+  ChildrenReducerState,
   ITerminal,
   TerminalCommand,
   TerminalUtils,
@@ -18,11 +19,13 @@ import { generateOutput } from "../utils/output.utils";
 import reducers, {
   inputReducerInitialState,
   commandReducerInitialState,
+  childrenReducerInitialState,
 } from "../store/reducers/index";
 import {
   commandActions,
   inputActions,
   outputActions,
+  childrenActions,
 } from "../store/actions/index";
 
 interface UseTerminal {
@@ -32,20 +35,24 @@ interface UseTerminal {
   inputRef: React.RefObject<HTMLInputElement>;
   scrollRef: React.RefObject<HTMLDivElement>;
   cursorClassName: string;
+  childrenState: ChildrenReducerState;
   handleCommand: (input: string) => void;
   focusInput: () => void;
   blurInput: () => void;
   displayOutput: (data: DisplayOutputArgs) => void;
+  closeFullscreen: () => void;
 }
 
 interface UseTerminalArgs {
   userCommands?: TerminalCommand;
   cursor: ITerminal["cursor"];
+  children?: React.ReactNode;
 }
 
 const useTerminal = ({
   userCommands,
   cursor,
+  children,
 }: UseTerminalArgs): UseTerminal => {
   /* @INFO: Output Reducer */
   const [output, dispatchOutput] = React.useReducer(reducers.outputReducer, []);
@@ -61,6 +68,14 @@ const useTerminal = ({
     commandReducerInitialState
   );
 
+  /* @INFO: Children States */
+  const [childrenState, dispatchChildrenState] = React.useReducer(
+    reducers.childrenReducer,
+    childrenReducerInitialState
+  );
+  const [openChild, setOpenChild] = React.useState<string | null>(null);
+
+  /* @INFO: Cursor Class Name */
   const cursorClassName =
     cursor === "block"
       ? "cursor__box"
@@ -91,6 +106,36 @@ const useTerminal = ({
   React.useEffect(() => {
     if (userCommands) registerCommands(userCommands);
   }, [userCommands]);
+
+  React.useEffect(() => {
+    if (children) {
+      const childrenArray = React.Children.toArray(children);
+      const fullScreenChildrenObject: ChildrenReducerState["fullscreen"] = {};
+
+      childrenArray.forEach((child: React.ReactNode) => {
+        if (!React.isValidElement(child)) {
+          console.error("Invalid child passed to Terminal");
+        }
+        if (typeof (child as React.ReactElement)?.type === "string") {
+          console.error("Invalid child passed to Terminal");
+        }
+        const type = (child as React.ReactElement)
+          .type as JSXElementConstructor<any>;
+        if (type.name && type.name === "FullscreenOutput") {
+          const { path, unmountOnExit } = (child as React.ReactElement).props;
+          fullScreenChildrenObject[path] = {
+            component: child,
+            unmountOnExit,
+            open: false,
+          };
+        }
+      });
+
+      dispatchChildrenState(
+        childrenActions.setFullscreenChildren(fullScreenChildrenObject)
+      );
+    }
+  }, [children]);
 
   /* @INFO: Terminal Functions */
   const displayOutput = (data: DisplayOutputArgs) => {
@@ -191,6 +236,26 @@ const useTerminal = ({
       scrollToBottom();
     });
   };
+  const openFullscreen = (path: string) => {
+    if (openChild) {
+      console.error("Cannot open multiple fullscreen at once");
+      return;
+    }
+    dispatchChildrenState(childrenActions.openFullscreenChildren(path));
+    setOpenChild(path);
+    dispatchInputState(inputActions.disableInput());
+  };
+  const closeFullscreen = () => {
+    if (!openChild) {
+      console.error("No fullscreen open");
+      return;
+    }
+    dispatchChildrenState(childrenActions.closeFullscreenChildren(openChild));
+    setOpenChild(null);
+    setTimeout(() => {
+      dispatchInputState(inputActions.resetInput());
+    }, 100);
+  };
 
   const utils: TerminalUtils = {
     displayOutput,
@@ -199,6 +264,8 @@ const useTerminal = ({
     password: userPassword,
     confirm: userConfirm,
     select: userSelect,
+    openFullscreen,
+    closeFullscreen,
   };
 
   Object.freeze(utils);
@@ -246,11 +313,13 @@ const useTerminal = ({
     inputRef,
     scrollRef,
     commands,
+    childrenState,
     handleCommand,
     focusInput,
     blurInput,
     cursorClassName,
     displayOutput: utils.displayOutput,
+    closeFullscreen: utils.closeFullscreen,
   };
 };
 

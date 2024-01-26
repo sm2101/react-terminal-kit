@@ -27,25 +27,28 @@ interface Output {
   type: "text" | "html" | "jsx";
 }
 
+type OutputVariant =
+  | "body1"
+  | "body2"
+  | "caption"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6";
+
+type OutputColor =
+  | "primary"
+  | "secondary"
+  | "error"
+  | "success"
+  | "warning"
+  | "info";
+
 interface OutputOptions {
-  variant?:
-    | "body1"
-    | "body2"
-    | "caption"
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "h6";
-  color?:
-    | "primary"
-    | "secondary"
-    | "error"
-    | "success"
-    | "warning"
-    | "info"
-    | string;
+  variant?: OutputVariant;
+  color?: OutputColor;
   url?: string;
 }
 
@@ -60,11 +63,41 @@ type DisplayOutputArgs =
   | React.ReactNode
   | string;
 
+// Output Components
+
+interface FullscreenOutputWrapperProps {
+  open: boolean;
+  handleClose: () => void;
+  terminalRef: React.RefObject<HTMLDivElement>;
+  children?: React.ReactNode;
+}
+
+interface FullscreenOutputProps {
+  unmountOnExit: boolean;
+  path: string;
+  children?: React.ReactNode;
+}
+
+interface TextProps {
+  variant: OutputVariant;
+  color: OutputColor;
+  children?: React.ReactNode;
+  id?: string;
+  className?: string;
+  href?: string;
+  style?: React.CSSProperties;
+}
+
 export {
   OutputVariantClass,
+  OutputVariant,
   OutputColorClass,
+  OutputColor,
   Output,
   OutputOptions,
   DisplayTextOutputArgs,
   DisplayOutputArgs,
+  FullscreenOutputWrapperProps,
+  FullscreenOutputProps,
+  TextProps,
 };

@@ -24,11 +24,11 @@ const build = spawnSync("tsc", ["--build", "tsconfig.json"], {
 });
 
 if (build.status !== 0) {
-  spinner.fail("❌ Build failed");
+  spinner.fail("Build failed");
   process.exit(1);
 }
 
-spinner.text = "✅ Build successful";
+spinner.text = "Build successful";
 
 // copy the stylesheets directory to the build directory
 
@@ -36,5 +36,5 @@ spinner.text = "Copying stylesheets";
 execSync(`cp -r ${srcDir}/stylesheets ${buildDir}`);
 spinner.text = "✅ Copied stylesheets";
 
-spinner.succeed("✅ Build successful");
+spinner.succeed("Build successful");
 process.exit(0);

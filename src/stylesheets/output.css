@@ -1,7 +1,7 @@
 .react-terminal__output-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1;
+  gap: 1px;
 }
 .react-terminal__output {
   display: flex;
@@ -10,6 +10,7 @@
   justify-content: flex-start;
   gap: 0.5ch;
   position: relative;
+  margin: 0;
 }
 .react-terminal__output-prefix {
   color: var(--terminal-disabled-color);
@@ -99,20 +100,35 @@
   left: 0;
   width: 100%;
   transition: all 0.5s ease-in-out;
-  overflow-y: auto;
-  overflow-x: hidden;
+  box-sizing: border-box;
+  overflow: hidden;
   background-color: var(--terminal-background-color);
   z-index: 9999;
 }
-.react-terminal__output-fullscreen .output__fullscreen-exit {
+.react-terminal__output-fullscreen .react-terminal__output-wrapper {
+  height: calc(100% - 2ch);
+  display: block;
+  overflow: auto;
+  box-sizing: border-box;
+}
+.react-terminal__output-fullscreen .output__fullscreen-footer {
   position: absolute;
   bottom: 0;
   left: 0;
   padding: 0.2rem;
-  background-color: var(--terminal-text-color);
-  color: var(--terminal-background-color);
-  border-top-right-radius: var(--terminal-border-radius);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--terminal-disabled-color);
+  height: calc(var(--terminal-line-height) + 1ch);
 }
-.react-terminal__output-fullscreen .output__fullscreen-exit p {
+.react-terminal__output-fullscreen .output__fullscreen-footer p {
   margin: 0;
+}
+
+.react-terminal__output-fullscreen .output__fullscreen-scroll {
+  display: flex;
+  gap: 0.5ch;
 }

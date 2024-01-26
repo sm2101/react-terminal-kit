@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from "react";
+import React from "react";
 import "./stylesheets/main.css";
 import "./stylesheets/output.css";
 import "./stylesheets/cursor.css";
@@ -13,7 +13,12 @@ import {
 import useTerminal from "./hooks/useTerminal";
 
 import OutputWrapper from "./components/Output/Wrapper";
+import FullscreenOutputWrapper from "./components/Output/Fullscreen/Wrapper";
 import InputWrapper from "./components/Input/index";
+
+// Output Components exports
+import FullscreenOutput from "./components/Output/Fullscreen/index";
+import Text from "./components/Output/Text/index";
 
 const Terminal: React.FC<ITerminal> = ({
   prefix,
@@ -33,28 +38,14 @@ const Terminal: React.FC<ITerminal> = ({
     inputState,
     handleCommand,
     output,
+    childrenState,
     displayOutput,
+    closeFullscreen,
   } = useTerminal({
     userCommands,
     cursor,
+    children,
   });
-  {
-    "id":<Element />,
-    "id":<Element />,
-    "id":<Element />,
-  }
-
-  // const [isFullScreen, setIsFullScreen] = React.useState<boolean>(false);
-  // const [fullScreenOutput, setFullScreenOutput] = React.useState<Output[]>([]);
-
-  // const handleCloseFullScreen = () => {
-  //   setIsFullScreen(false);
-  //   setInputType("command");
-  //   inputRef.current?.focus();
-  //   setIsFocused(true);
-  //   setFullScreenOutput([]);
-  // };
-  console.log("Children", Children.toArray(children));
 
   return (
     <div
@@ -76,15 +67,26 @@ const Terminal: React.FC<ITerminal> = ({
         blurInput={blurInput}
         displayOutput={displayOutput}
       />
-      {/* <FullscreenOutput
-        open={isFullScreen}
-        handleClose={handleCloseFullScreen}
-        output={fullScreenOutput}
-        terminalRef={scrollRef}
-      /> */}
+      {Object.keys(childrenState.fullscreen).map((path: string) => {
+        const child = childrenState.fullscreen[path];
+        const { component, unmountOnExit, open } = child;
+        if (unmountOnExit && !open) {
+          return null;
+        }
+        return (
+          <FullscreenOutputWrapper
+            key={path}
+            open={open}
+            terminalRef={scrollRef}
+            handleClose={closeFullscreen}
+          >
+            {component}
+          </FullscreenOutputWrapper>
+        );
+      })}
     </div>
   );
 };
 
-export { TerminalUtils, TerminalCommand };
+export { TerminalUtils, TerminalCommand, FullscreenOutput, Text };
 export default Terminal;

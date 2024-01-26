@@ -8,7 +8,7 @@
   "scripts": {
     "build:script": "node ./scripts/build.js",
     "build": "tsc",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build:script"
   },
   "files": [
     "dist"
@@ -28,6 +28,7 @@
     "react": "^18.2.0"
   },
   "dependencies": {
+    "clsx": "^2.1.0",
     "react": "^18.2.0"
   }
 }
