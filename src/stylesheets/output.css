@@ -6,6 +6,7 @@
 
 .react-terminal__output-wrapper p {
   margin: 0;
+  text-align: left;
 }
 .react-terminal__output {
   display: flex;

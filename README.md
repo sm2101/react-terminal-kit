@@ -64,15 +64,19 @@ yarn add react-terminal-kit
 
 This ensures that the terminal is displayed within the specified dimensions and fits seamlessly into your application layout. If you have specific layout instructions or considerations, you can further customize this section based on your needs.
 
+**Try it on CodeSandbox**
+[![Edit react-terminal-kit-usage](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/sandbox/react-terminal-kit-usage-2rxtvz?file=%2Fpackage.json%3A12%2C31)
+
 ## Terminal Props
 
-| Property   | Type     | Default Value | Description                                                                                                      |
-| ---------- | -------- | ------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `prefix`   | `string` | `""`          | A string representing the prefix displayed before the prompt. Defaults to an empty string.                       |
-| `prompt`   | `string` | `$`           | A string representing the prompt displayed at the beginning of each command line. Defaults to `$`.               |
-| `cursor`   | `string` | `'block'`     | A string representing the cursor type. Options include 'block', 'underline', and 'bar'. Defaults to 'block'.     |
-| `theme`    | `string` | `'dark'`      | A string representing the color theme. Options include 'light' and 'dark'. Defaults to 'dark'.                   |
-| `commands` | `object` | (Required)    | An object where keys are command triggers and values are objects containing description and callback properties. |
+| Property         | Type                    | Default Value | Description                                                                                                                    |
+| ---------------- | ----------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `prefix`         | `string`                | `""`          | A string representing the prefix displayed before the prompt. Defaults to an empty string.                                     |
+| `prompt`         | `string`                | `$`           | A string representing the prompt displayed at the beginning of each command line. Defaults to `$`.                             |
+| `cursor`         | `string`                | `'block'`     | A string representing the cursor type. Options include 'block', 'underline', and 'bar'. Defaults to 'block'.                   |
+| `theme`          | `string`                | `'dark'`      | A string representing the color theme. Options include 'light' and 'dark'. Defaults to 'dark'.                                 |
+| `welcomeMessage` | `ReactNode` or `string` | `undefined`   | Content to be displayed at the top whenever the component is mounted. Can be a string or a ReactNode. Defaults to `undefined`. |
+| `commands`       | `object`                | (Required)    | An object where keys are command triggers and values are objects containing description and callback properties.               |
 
 ### `commands` Object Properties
 

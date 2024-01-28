@@ -1,7 +1,7 @@
 {
   "name": "react-terminal-kit",
   "displayName": "React Terminal Kit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "The React Terminal Kit package provides a terminal-like user interface for React applications. It allows you to integrate a fully functional terminal component into your React project, enabling users to interact with the application through a command-line interface.",
   "main": "dist/index.jsx",
   "author": "Siddharth Mittal <siddharthmittal2101@gmail.com>",

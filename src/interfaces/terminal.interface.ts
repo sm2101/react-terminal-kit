@@ -31,6 +31,7 @@ interface ITerminal {
   cursor: "block" | "underline" | "bar";
   theme: "light" | "dark";
   commands: TerminalCommand;
+  welcomeMessage?: React.ReactNode | string;
   children?: React.ReactNode;
 }
 

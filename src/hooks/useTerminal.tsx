@@ -27,6 +27,7 @@ import {
   outputActions,
   childrenActions,
 } from "../store/actions/index";
+import Text from "../components/Output/Text";
 
 interface UseTerminal {
   output: Array<Output>;
@@ -47,12 +48,14 @@ interface UseTerminalArgs {
   userCommands?: TerminalCommand;
   cursor: ITerminal["cursor"];
   children?: React.ReactNode;
+  welcomeMessage?: React.ReactNode | string;
 }
 
 const useTerminal = ({
   userCommands,
   cursor,
   children,
+  welcomeMessage,
 }: UseTerminalArgs): UseTerminal => {
   /* @INFO: Output Reducer */
   const [output, dispatchOutput] = React.useReducer(reducers.outputReducer, []);
@@ -136,6 +139,36 @@ const useTerminal = ({
       );
     }
   }, [children]);
+
+  React.useEffect(() => {
+    if (output.length !== 0) return;
+    if (welcomeMessage) {
+      if (React.isValidElement(welcomeMessage)) {
+        dispatchOutput(outputActions.addOutput(welcomeMessage));
+      } else if (typeof welcomeMessage === "string") {
+        dispatchOutput(
+          outputActions.addOutput(
+            <Text variant="body1" color="primary">
+              {welcomeMessage}
+            </Text>
+          )
+        );
+      } else {
+        console.warn(
+          "Invalid welcomeMessage type. welcomeMessage must be a string or a ReactNode."
+        );
+      }
+    }
+    dispatchOutput(
+      outputActions.addOutput({
+        content: "Type 'help' to see available commands.",
+        options: {
+          variant: "caption",
+          color: "primary",
+        },
+      })
+    );
+  }, []);
 
   /* @INFO: Terminal Functions */
   const displayOutput = (data: DisplayOutputArgs) => {

@@ -19,12 +19,14 @@ import InputWrapper from "./components/Input/index";
 // Output Components exports
 import FullscreenOutput from "./components/Output/Fullscreen/index";
 import Text from "./components/Output/Text/index";
+import { DisplayTextOutputArgs } from "./interfaces/output.interface";
 
 const Terminal: React.FC<ITerminal> = ({
   prefix,
   prompt,
   cursor = "block",
   theme = "dark",
+  welcomeMessage,
   commands: userCommands,
   children,
 }) => {
@@ -44,6 +46,7 @@ const Terminal: React.FC<ITerminal> = ({
   } = useTerminal({
     userCommands,
     cursor,
+    welcomeMessage,
     children,
   });
 
