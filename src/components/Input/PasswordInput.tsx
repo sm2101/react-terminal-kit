@@ -19,7 +19,14 @@ const PasswordInput: React.FC<IPasswordInput> = ({
   const [input, setInput] = React.useState<string>("");
   const [cursorPosition, setCursorPosition] = React.useState<number>(0);
   const [numTries, setNumTries] = React.useState<number>(1);
-  const [hideCursor, setHideCursor] = React.useState<boolean>(false);
+  const [hideCursor, setHideCursor] = React.useState<boolean>(true);
+  const [maxRetries, setMaxRetries] = React.useState<number>(3);
+
+  React.useEffect(() => {
+    if (options?.maxRetries) {
+      setMaxRetries(options.maxRetries);
+    }
+  }, [options?.maxRetries]);
 
   const handleInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => {
@@ -76,33 +83,31 @@ const PasswordInput: React.FC<IPasswordInput> = ({
         generateOutputNode({
           prefix,
           prompt,
-          text: options?.mask ? "[hidden]" : input,
+          text: hideCursor ? "[hidden]" : input,
         })
       );
       if (options?.allowEmpty) {
         validateInputAndEnter(input);
       } else {
-        if (options?.maxRetries) {
-          if (numTries < options.maxRetries) {
-            if (input.length > 0) {
-              validateInputAndEnter(input);
-            } else {
-              displayOutput({
-                content: options?.retryMessage || "[Please enter a value]",
-                options: {
-                  color: "primary",
-                  variant: "caption",
-                },
-              });
-              setNumTries(numTries + 1);
-            }
+        if (numTries < maxRetries) {
+          if (input.length > 0) {
+            validateInputAndEnter(input);
           } else {
             displayOutput({
-              content: options.errorMessage || "[Max retries exceeded]",
-              options: { color: "error", variant: "caption" },
+              content: options?.retryMessage || "[Please enter a value]",
+              options: {
+                color: "primary",
+                variant: "caption",
+              },
             });
-            handleError("Max retries exceeded");
+            setNumTries(numTries + 1);
           }
+        } else {
+          displayOutput({
+            content: options?.errorMessage || "[Max retries exceeded]",
+            options: { color: "error", variant: "caption" },
+          });
+          handleError("Max retries exceeded");
         }
       }
     },
@@ -145,7 +150,10 @@ const PasswordInput: React.FC<IPasswordInput> = ({
   }, [isFocused]);
 
   React.useEffect(() => {
-    if (options?.mask) setHideCursor(true);
+    console.log(options?.mask);
+    if (options?.mask !== undefined) {
+      setHideCursor(options.mask);
+    }
   }, [options?.mask]);
 
   return (
@@ -153,11 +161,15 @@ const PasswordInput: React.FC<IPasswordInput> = ({
       <div className="react-terminal__input">
         <div className="react-terminal__input-prefix">
           {prefix}
-          {options?.mask && " (hidden)"}
+          {hideCursor && " (hidden)"}
         </div>
         <div className="react-terminal__input-prompt">{prompt}</div>
         <div className="react-terminal__input-content">
-          {options?.mask ? <p></p> : <p>{input}</p>}
+          <p>
+            {input.split("").map((char) => {
+              return hideCursor ? "*" : char;
+            })}
+          </p>
           {isFocused && !hideCursor && (
             <span
               className={`react-terminal__terminal-cursor blink ${

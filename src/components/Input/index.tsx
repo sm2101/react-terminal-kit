@@ -5,6 +5,7 @@ import {
   PasswordInputState,
   BooleanInputState,
   SelectInputState,
+  LoadingProps,
 } from "../../interfaces/input.interface";
 
 // Input Components
@@ -13,6 +14,7 @@ import TextInput from "./TextInput";
 import PasswordInput from "./PasswordInput";
 import BooleanInput from "./BooleanInput";
 import SelectInput from "./SelectInput";
+import Loading from "./Loading";
 
 //Interfaces
 import { DisplayOutputArgs } from "../../interfaces/output.interface";
@@ -121,6 +123,13 @@ const InputWrapper: React.FC<InputWrapperProps> = (props) => {
             focusInput={props.focusInput}
             blurInput={props.blurInput}
             displayOutput={props.displayOutput}
+          />
+        );
+      case "loading":
+        return (
+          <Loading
+            text={(props.inputState.state as LoadingProps).text}
+            type={(props.inputState.state as LoadingProps).type}
           />
         );
       default:

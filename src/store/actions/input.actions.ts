@@ -6,6 +6,7 @@ import {
   PasswordInputState,
   SelectInputState,
   TextInputState,
+  LoadingProps,
 } from "../../interfaces/input.interface";
 
 const setIsFocused = (payload: boolean): InputAction => ({
@@ -33,6 +34,11 @@ const setSelectInput = (payload: SelectInputState): InputAction => ({
   payload,
 });
 
+const setLoading = (payload: LoadingProps): InputAction => ({
+  type: InputActionTypes.SET_LOADING,
+  payload,
+});
+
 const resetInput = (): InputAction => ({
   type: InputActionTypes.RESET_INPUT,
 });
@@ -49,4 +55,5 @@ export default {
   setSelectInput,
   resetInput,
   disableInput,
+  setLoading,
 };

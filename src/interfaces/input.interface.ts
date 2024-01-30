@@ -67,7 +67,38 @@ interface UserSelectInputOptions {
   default?: number;
 }
 
-type InputType = "command" | "text" | "password" | "boolean" | "select" | null;
+type InputType =
+  | "command"
+  | "text"
+  | "password"
+  | "boolean"
+  | "select"
+  | "loading"
+  | null;
+
+type LoadingType =
+  | "bar"
+  | "bubble"
+  | "breathe"
+  | "metro"
+  | "modern-metro"
+  | "vertical"
+  | "horizontal"
+  | "semi-circle"
+  | "arrow"
+  | "clock"
+  | "bounce"
+  | "firework";
+
+interface LoadingProps {
+  text: string;
+  type: LoadingType;
+}
+
+interface StopLoadingArgs {
+  message?: string;
+  status: "success" | "error";
+}
 
 type TextInputState = {
   prefix: ITextInput["prefix"];
@@ -106,6 +137,7 @@ type InputState =
   | PasswordInputState
   | BooleanInputState
   | SelectInputState
+  | LoadingProps
   | null;
 
 interface InputReducerState {
@@ -131,4 +163,7 @@ export {
   SelectInputState,
   InputState,
   InputReducerState,
+  LoadingType,
+  LoadingProps,
+  StopLoadingArgs,
 };

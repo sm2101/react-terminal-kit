@@ -5,6 +5,7 @@ import {
   PasswordInputState,
   SelectInputState,
   TextInputState,
+  LoadingProps,
 } from "../../interfaces/input.interface";
 
 const INIT_STATE: InputReducerState = {
@@ -46,6 +47,12 @@ const inputReducer = (
         ...state,
         state: action.payload as SelectInputState,
         type: "select",
+      };
+    case InputActionTypes.SET_LOADING:
+      return {
+        ...state,
+        state: action.payload as LoadingProps,
+        type: "loading",
       };
     case InputActionTypes.RESET_INPUT:
       return {

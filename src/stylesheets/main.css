@@ -51,6 +51,7 @@
   --terminal-scrollbar-thumb-color: #808080;
   --terminal-scrollbar-hover-color: #808080;
   --terminal-scrollbar-active-color: #ffffff;
+  --terminal-loading-color: #efefef;
 }
 
 .react-terminal.react-terminal__light-mode {
@@ -75,4 +76,5 @@
   --terminal-scrollbar-thumb-color: #e0e0e0;
   --terminal-scrollbar-hover-color: #e0e0e0;
   --terminal-scrollbar-active-color: #e0e0e0;
+  --terminal-loading-color: #efefef;
 }

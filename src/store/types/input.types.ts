@@ -8,6 +8,7 @@ enum InputActionTypes {
   SET_SELECT_INPUT = "SET_SELECT_INPUT",
   RESET_INPUT = "RESET_INPUT",
   DISABLE_INPUT = "DISABLE_INPUT",
+  SET_LOADING = "SET_LOADING",
 }
 
 interface InputAction {

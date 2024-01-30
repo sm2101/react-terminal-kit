@@ -19,6 +19,13 @@ const TextInput: React.FC<ITextInput> = ({
   const [input, setInput] = React.useState<string>("");
   const [cursorPosition, setCursorPosition] = React.useState<number>(0);
   const [numTries, setNumTries] = React.useState<number>(1);
+  const [maxRetries, setMaxRetries] = React.useState<number>(3);
+
+  React.useEffect(() => {
+    if (options?.maxRetries) {
+      setMaxRetries(options.maxRetries);
+    }
+  }, [options?.maxRetries]);
 
   const handleInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => {
@@ -81,27 +88,25 @@ const TextInput: React.FC<ITextInput> = ({
       if (options?.allowEmpty) {
         validateInputAndEnter(input);
       } else {
-        if (options?.maxRetries) {
-          if (numTries < options.maxRetries) {
-            if (input.length > 0) {
-              validateInputAndEnter(input);
-            } else {
-              displayOutput({
-                content: options?.retryMessage || "[Please enter a value]",
-                options: {
-                  color: "primary",
-                  variant: "caption",
-                },
-              });
-              setNumTries(numTries + 1);
-            }
+        if (numTries < maxRetries) {
+          if (input.length > 0) {
+            validateInputAndEnter(input);
           } else {
             displayOutput({
-              content: options.errorMessage || "[Max retries exceeded]",
-              options: { color: "error", variant: "caption" },
+              content: options?.retryMessage || "[Please enter a value]",
+              options: {
+                color: "primary",
+                variant: "caption",
+              },
             });
-            handleError("Max retries exceeded");
+            setNumTries(numTries + 1);
           }
+        } else {
+          displayOutput({
+            content: options?.errorMessage || "[Max retries exceeded]",
+            options: { color: "error", variant: "caption" },
+          });
+          handleError("Max retries exceeded");
         }
       }
     },

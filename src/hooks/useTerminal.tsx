@@ -8,6 +8,9 @@ import {
   UserPasswordInputOptions,
   UserBooleanInputOptions,
   UserSelectInputOptions,
+  LoadingType,
+  LoadingProps,
+  StopLoadingArgs,
 } from "../interfaces/input.interface";
 import {
   ChildrenReducerState,
@@ -77,7 +80,6 @@ const useTerminal = ({
     childrenReducerInitialState
   );
   const [openChild, setOpenChild] = React.useState<string | null>(null);
-
   /* @INFO: Cursor Class Name */
   const cursorClassName =
     cursor === "block"
@@ -289,6 +291,47 @@ const useTerminal = ({
       dispatchInputState(inputActions.resetInput());
     }, 100);
   };
+  const startLoading = (data?: Partial<LoadingProps>) => {
+    dispatchInputState(
+      inputActions.setLoading({
+        text: data?.text || "Loading...",
+        type: data?.type || "bar",
+      })
+    );
+  };
+  const stopLoading = (args?: StopLoadingArgs) => {
+    dispatchInputState(inputActions.resetInput());
+    displayOutput([
+      {
+        content:
+          args?.status === "success" ? "✔" : status === "error" ? "✖" : "◯",
+        options: {
+          variant: "caption",
+          color:
+            args?.status === "success"
+              ? "success"
+              : status === "error"
+              ? "error"
+              : "secondary",
+        },
+      },
+      {
+        content:
+          args?.message ||
+          `${(inputState?.state as LoadingProps)?.text} ${
+            args?.status === "success"
+              ? "succeeded"
+              : args?.status === "error"
+              ? "failed"
+              : "completed"
+          }`,
+        options: {
+          variant: "body2",
+          color: "primary",
+        },
+      },
+    ]);
+  };
 
   const utils: TerminalUtils = {
     displayOutput,
@@ -299,6 +342,8 @@ const useTerminal = ({
     select: userSelect,
     openFullscreen,
     closeFullscreen,
+    startLoading,
+    stopLoading,
   };
 
   Object.freeze(utils);

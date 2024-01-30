@@ -6,13 +6,19 @@
   overflow: hidden;
 }
 
-.react-terminal__input {
+.react-terminal__input,
+.react-terminal__loading {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: flex-start;
   gap: 0.5ch;
   position: relative;
+}
+.react-terminal__loading {
+  margin-top: 1.1ch;
+  font-size: calc(var(--terminal-font-size) * 1.2);
+  color: var(--terminal-loading-color);
 }
 .react-terminal__input.input__consent,
 .react-terminal__input.input__select {
@@ -23,6 +29,7 @@
 .react-terminal__input-prefix {
   color: var(--terminal-prompt-color);
 }
+
 .react-terminal__input-prompt {
   color: var(--terminal-prompt-color);
 }

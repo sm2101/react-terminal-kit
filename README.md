@@ -116,7 +116,11 @@ The `utils` parameter passed to the command callbacks contains the following uti
 
 8. `closeFullScreen()`: Closes the currently open full-screen output.
 
-[DisplayOutputArgs](#displayoutputargs) | [InputOptions](#inputoptions) | [PasswordOptions](#passwordoptions) | [BooleanOptions](#booleanoptions) | [SelectOptions](#selectoptions) | [FullScreenOutput](#fullscreenoutput)
+9. `startLoading(options?: LoadingProps): Promise<void>`: Initiates a loading indicator with an optional text and type.
+
+10. `stopLoading(args?: StopLoadingArgs)`: Stops the ongoing loading indicator. The `args` parameter is optional and can include additional options for stopping the loading indicator.
+
+[DisplayOutputArgs](#displayoutputargs) | [InputOptions](#inputoptions) | [PasswordOptions](#passwordoptions) | [BooleanOptions](#booleanoptions) | [SelectOptions](#selectoptions) | [FullScreenOutput](#fullscreenoutput) | [Text](#text) | [LoadingProps](#loadingprops) | [StopLoadingArgs](#stoploadingargs)
 
 #### DisplayOutputArgs
 
@@ -143,7 +147,7 @@ Represents the options for the `input` function, allowing developers to customiz
 | Property | Type | Default | Description |
 | -------------- | --------------------- | --------------------- | -------------------------------------------------------------------------------- |
 | `allowEmpty` | `boolean` (optional) | `true` | Allow empty input. If set to true, the user can submit an empty input. |
-| `maxRetries` | `number` (optional) | `NA` | Maximum number of retries allowed. If set to 0, retries are infinite, and `allowEmpty` must be false. |
+| `maxRetries` | `number` (optional) | `3` | Maximum number of retries allowed. If set to 0, retries are infinite, and `allowEmpty` must be false. |
 | `retryMessage` | `string` (optional) | `NA` | Message displayed on retry. |
 | `errorMessage` | `string` (optional) | `NA` | Message displayed on error. |
 | `validator` | `(input: string) => boolean` (optional) |`NA` | Validator function to check the validity of the input. Should return true if valid, false otherwise. |
@@ -175,6 +179,43 @@ Represents the options for the `select` function, allowing developers to customi
 | --------- | ------------------- | ------------- | -------------------------------- |
 | `options` | `string[]`          | Not specified | Array of options to choose from. |
 | `default` | `number` (optional) | Not specified | Default selection index          |
+
+### LoadingProps
+
+Represents the options for the `startLoading` function, allowing developers to customize the behavior of the loading indicator.
+
+| Property | Type                          | Default Value  | Description                                               |
+| -------- | ----------------------------- | -------------- | --------------------------------------------------------- |
+| `text`   | `string`                      | `"Loading..."` | The text to be displayed alongside the loading indicator. |
+| `type`   | [`LoadingType`](#loadingtype) | `"bar"`        | The type of loading indicator to be displayed.            |
+
+#### LoadingType
+
+| Type           | Symbols                                                                                                                                                                                  |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bar`          | `["\|", "/", "-", "\"]`                                                                                                                                                                  |
+| `bubbles`      | `["⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"]`                                                                                                                                               |
+| `breathe`      | `["  ()  ", " (  ) ", "(    )", " (  ) "]`                                                                                                                                               |
+| `metro`        | `["[    ]", "[=   ]", "[==  ]", "[=== ]", "[ ===]", "[  ==]", "[   =]"]`                                                                                                                 |
+| `modern-metro` | `["[▱▱▱▱▱▱▱]", "[▰▱▱▱▱▱▱]", "[▰▰▱▱▱▱▱]", "[▰▰▰▱▱▱▱]", "[▰▰▰▰▱▱▱]", "[▰▰▰▰▰▱▱]", "[▰▰▰▰▰▰▱]", "[▰▰▰▰▰▰▰]", "[▱▰▰▰▰▰▰]", "[▱▱▰▰▰▰▰]", "[▱▱▱▰▰▰▰]", "[▱▱▱▱▰▰▰]", "[▱▱▱▱▱▰▰]", "[▱▱▱▱▱▱▰]"]` |
+| `vertical`     | `["▁", "▃", "▄", "▅", "▆", "▇", "▆", "▅", "▄", "▃"]`                                                                                                                                     |
+| `horizontal`   | `["▏", "▎", "▍", "▌", "▋", "▊", "▉", "▊", "▋", "▌", "▍"]`                                                                                                                                |
+| `semi-circle`  | `["◐", "◓", "◑", "◒"]`                                                                                                                                                                   |
+| `arrow`        | `["▹▹▹▹▹", "▸▹▹▹▹", "▹▸▹▹▹", "▹▹▸▹▹", "▹▹▹▸▹", "▹▹▹▹▸"]`                                                                                                                                 |
+| `clock`        | `["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"]`                                                                                                               |
+| `bounce`       | `["(●     )", "( ●    )", "(  ●   )", "(   ●  )", "(    ● )", "(     ●)", "(    ● )", "(   ●  )", "(  ●   )", "( ●    )"]`                                                               |
+| `firework`     | `["⢀", "⠠", "⠐", "⠈", "*", "*", " "]`                                                                                                                                                    |
+
+For a more extensive collection of loading animations, you can explore the [bash_loading_animations](https://github.com/Silejonu/bash_loading_animations) repository on GitHub.
+
+### StopLoadingArgs
+
+Represents the options for the `stopLoading` function, allowing developers to customize the output after stopping the loading indicator.
+
+| Property  | Type     | Default Value                  | Description                                             |
+| --------- | -------- | ------------------------------ | ------------------------------------------------------- |
+| `message` | `string` | _`<text> succeeded \| failed`_ | The message to be displayed after stopping the loading. |
+| `status`  | `string` | NA                             | The exit status of the loading indicator.               |
 
 ---
 

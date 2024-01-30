@@ -1,5 +1,7 @@
 import { DisplayOutputArgs } from "./output.interface";
 import {
+  LoadingProps,
+  StopLoadingArgs,
   UserBooleanInputOptions,
   UserInputOptions,
   UserPasswordInputOptions,
@@ -23,6 +25,8 @@ interface TerminalUtils {
   select: (prompt: string, options: UserSelectInputOptions) => Promise<number>;
   openFullscreen: (path: string) => void;
   closeFullscreen: () => void;
+  startLoading: (data?: LoadingProps) => void;
+  stopLoading: (args?: StopLoadingArgs) => void;
 }
 
 interface ITerminal {
